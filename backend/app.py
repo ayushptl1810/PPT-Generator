@@ -39,8 +39,8 @@ MIN_SLIDES = 10
 MAX_SLIDES = 40
 MAX_TEMPLATE_BYTES = 30 * 1024 * 1024  # 30 MB
 OPENAI_DEFAULT_MODEL = "gpt-4o-mini"        # good default for OpenAI / AI Pipe
-ANTHROPIC_DEFAULT_MODEL = "claude-3-5-sonnet-latest"
-GEMINI_DEFAULT_MODEL = "gemini-2.5-flash"
+ANTHROPIC_DEFAULT_MODEL = "claude-3-5-sonnet-20241022"
+GEMINI_DEFAULT_MODEL = "gemini-1.5-flash"
 
 # ---------- Front page ----------
 @app.get("/", response_class=HTMLResponse)
@@ -257,13 +257,12 @@ async def build_slide_plan(
             raise RuntimeError("openai package not installed. `pip install openai`")
         client_kwargs = {"api_key": api_key}
         client = OpenAI(**client_kwargs)
-        resp = client.responses.create(
+        resp = client.chat.completions.create(
             model=model_name,
-            input=[{"role": "user", "content": instruction}],
-
+            messages=messages,
             temperature=0.2,
         )
-        content = _extract_openai_output_text(resp)
+        content = resp.choices[0].message.content
         data = _safe_json_parse(content)
 
     elif provider == "anthropic":
