@@ -1,0 +1,21 @@
+{
+  "name": "ppt-generator",
+  "version": "1.0.0",
+  "description": "AI-Powered Presentation Generator",
+  "scripts": {
+    "build": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "cd frontend && npm install && npm run build",
+    "build:backend": "cd backend && pip install -r requirements.txt",
+    "start": "cd backend && python app.py",
+    "dev": "concurrently \"cd backend && uvicorn app:app --reload --port 8000\" \"cd frontend && npm run dev\"",
+    "install:all": "npm install && cd frontend && npm install && cd ../backend && pip install -r requirements.txt"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "python": ">=3.9.0"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    },
+    {
+      "src": "backend/app.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/generate",
+      "dest": "backend/app.py"
+    },
+    {
+      "src": "/favicon.ico",
+      "dest": "backend/app.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "frontend/dist/$1"
+    }
+  ],
+  "outputDirectory": "frontend/dist",
+  "buildCommand": "npm run build:frontend",
+  "installCommand": "npm install && cd frontend && npm install",
+  "functions": {
+    "backend/app.py": {
+      "runtime": "python3.9"
+    }
+  },
+  "framework": null
+}
